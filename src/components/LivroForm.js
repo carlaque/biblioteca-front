@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { withRouter } from "react-router";
 
 function LabelInput(props) {
   return (
@@ -52,12 +53,14 @@ class LivroForm extends React.Component {
         });
     }
   }
+
   atualizarTexto(campo, txt) {
     const novoState = { ...this.state };
 
     novoState.livro[campo] = txt;
     this.setState(novoState);
   }
+
   salvar() {
     const apiUrl = `http://localhost:8080/livros`;
     fetch(apiUrl, {
@@ -68,12 +71,40 @@ class LivroForm extends React.Component {
       },
       body: JSON.stringify(this.state.livro),
     }).then((response) => {
-        console.log(response)
+      console.log(response);
       this.componentDidMount();
+      alert("livro + " + this.state.livro.titulo + " cadastrado com sucesso");
     });
   }
 
   render() {
+    const button = [];
+    if (this.state.isbn == undefined) {
+      button.push(
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            this.salvar();
+            this.props.history.push("/");
+          }}
+        >
+          Salvar
+        </button>
+      );
+    } else {
+      button.push(
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            this.salvar();
+            this.props.history.push("/");
+          }}
+        >
+          Editar
+        </button>
+      );
+    }
+
     return (
       <div>
         <LabelInput
@@ -100,18 +131,10 @@ class LivroForm extends React.Component {
           value={this.state.livro.genero}
           atualizarTexto={(txt) => this.atualizarTexto("genero", txt)}
         />
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            this.salvar();
-          }}
-        >
-            {/* todo: aqui mudar qunado tem isbnd e parametro para no caso de edicao mudar o textp */}
-          Salvar
-        </button>
+        {button}
       </div>
     );
   }
 }
 
-export default LivroForm;
+export default withRouter(LivroForm);
