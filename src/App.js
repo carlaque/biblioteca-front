@@ -1,6 +1,5 @@
 import "./App.css";
 import Livros from "./components/Livros";
-import LivroForm from "./components/LivroForm";
 import { Link } from "react-router-dom";
 
 function App() {
@@ -9,12 +8,12 @@ function App() {
       <h1>Gestão de Biblioteca</h1>
       <Link
         to={{ pathname: "/cadastrar"}}
-        className="btn"
+        className="link" 
+        id="btn-cadastro"
       >
-        Cadastrar 
+        Cadastrar Livro
       </Link>
       <Livros />
-      {/* <LivroForm/> */}
     </div>
   );
 }

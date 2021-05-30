@@ -77,12 +77,28 @@ class LivroForm extends React.Component {
     });
   }
 
+  editar() {
+    const apiUrl = `http://localhost:8080/livros/${this.state.livro.isbn}`;
+    fetch(apiUrl, {
+      method: "PUT",
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this.state.livro),
+    }).then((response) => {
+      console.log(response);
+      this.componentDidMount();
+      alert("livro + " + this.state.livro.titulo + " cadastrado com sucesso");
+    });
+  }
+
   render() {
     const button = [];
     if (this.state.isbn == undefined) {
       button.push(
         <button
-          className="btn btn-primary"
+          id="btn"
           onClick={() => {
             this.salvar();
             this.props.history.push("/");
@@ -94,9 +110,9 @@ class LivroForm extends React.Component {
     } else {
       button.push(
         <button
-          className="btn btn-primary"
+          id="btn"
           onClick={() => {
-            this.salvar();
+            this.editar();
             this.props.history.push("/");
           }}
         >
@@ -106,7 +122,8 @@ class LivroForm extends React.Component {
     }
 
     return (
-      <div>
+      <div className="form-livro">
+        <h2>Cadastro de Livro</h2>
         <LabelInput
           label="ISBN:"
           corFundo="#DDDD00"

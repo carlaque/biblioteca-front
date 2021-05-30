@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import LivroForm from "./LivroForm";
 import { Link } from "react-router-dom";
 
 class Livros extends React.Component {
@@ -57,28 +56,30 @@ class Livros extends React.Component {
     const camposTabela = [];
     for (let i = 0; i < lista.length; i++) {
       listaDisplay.push(
-        <tr>
+        <tr key={lista[i].isbn}>
           <td>{lista[i].id}</td>
           <td>{lista[i].isbn}</td>
           <td>{lista[i].titulo}</td>
           <td>{lista[i].autor}</td>
           <td>{lista[i].genero}</td>
-          <div className="buttons">
-            <Link
-              to={{ pathname: "/cadastrar/:isbn", isbn: lista[i].isbn }}
-              className="btn"
-            >
-              Editar
-            </Link>
-            <button
-              className="btn"
-              onClick={() => {
-                this.excluir(lista[i]);
-              }}
-            >
-              Excluir
-            </button>
-          </div>
+          <td>
+            <div id="td-buttons">
+              <Link
+                to={{ pathname: "/cadastrar/:isbn", isbn: lista[i].isbn }}
+                className="link"
+              >
+                Editar
+              </Link>
+              <button
+                id="btn-excluir"
+                onClick={() => {
+                  this.excluir(lista[i]);
+                }}
+              >
+                Excluir
+              </button>
+            </div>
+          </td>
         </tr>
       );
     }
@@ -87,6 +88,7 @@ class Livros extends React.Component {
       Object.keys(lista[0]).forEach((campo) => {
         camposTabela.push(<th>{campo.toUpperCase()}</th>);
       });
+      camposTabela.push(<th> </th>);
     }
 
     return (
