@@ -12,13 +12,29 @@ class Livros extends React.Component {
       genero: "",
     },
     lista: [],
+
+    isbn: "",
+    titulo: "",
+    autor: "",
+    genero: ""
   };
 
   componentDidMount() {
+    this.carregaBooks();
+  }
+
+  carregaBooks() {
     axios
-      .get(`http://localhost:8080/livros`, {
-        responseType: "json",
-      })
+      .get(
+        `http://10.68.77.71:8080/books`, 
+        {
+          params: {
+            isbn: this.state.isbn,
+            titulo: this.state.titulo,
+            autor: this.state.autor,
+            genero: this.state.genero
+          }
+        })
       .then((response) => {
         const nState = { ...this.state };
         nState.lista = response.data;
@@ -29,7 +45,7 @@ class Livros extends React.Component {
   editar() {}
 
   excluir(livro) {
-    const apiUrl = `http://localhost:8080/livros/${livro.isbn}`;
+    const apiUrl = `http://10.68.77.71:8080/books/${livro.isbn}`;
     fetch(apiUrl, {
       method: "DELETE",
       headers: {
@@ -93,6 +109,18 @@ class Livros extends React.Component {
 
     return (
       <div>
+        <div>
+          <h2>Pesquisa</h2>
+          <label>ISBN:</label><br/>
+          <input className="form-control" value={this.state.isbn} onChange={(txt) => this.setState({isbn: txt.target.value})}/><br/>
+          <label>TITULO:</label><br/>
+          <input className="form-control" value={this.state.titulo} onChange={(txt) => this.setState({titulo: txt.target.value})}/><br/>
+          <label>AUTOR:</label><br/>
+          <input className="form-control" value={this.state.autor} onChange={(txt) => this.setState({autor: txt.target.value})}/><br/>
+          <label>GENERO:</label><br/>
+          <input className="form-control" value={this.state.genero} onChange={(txt) => this.setState({genero: txt.target.value})}/><br/>
+          <input type="button" value="CARREGA MAIS" onClick={this.carregaBooks.bind(this)} />
+        </div>
         <h2>Livros</h2>
         <table className="table table-striped">
           <thead>
@@ -106,3 +134,21 @@ class Livros extends React.Component {
 }
 
 export default Livros;
+
+function LabelInput(props) {
+  return (
+    <div className="form-group">
+      <label>{props.label}</label>
+      <input
+        type="TEXT"
+        value={props.value}
+        className="form-control"
+        onChange={(e) => {
+          if (props.atualizarTexto) {
+            props.atualizarTexto(e.target.value);
+          }
+        }}
+      />
+    </div>
+  );
+}
