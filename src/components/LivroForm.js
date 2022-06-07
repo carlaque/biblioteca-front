@@ -42,7 +42,7 @@ class LivroForm extends React.Component {
   componentDidMount() {
     if (this.state.isbn !== undefined) {
       axios
-        .get(`http://localhost:8080/livros/${this.state.isbn}`, {
+        .get(`http://10.68.77.71:8080/books/${this.state.isbn}`, {
           responseType: "json",
         })
         .then((response) => {
@@ -62,7 +62,7 @@ class LivroForm extends React.Component {
   }
 
   salvar() {
-    const apiUrl = `http://localhost:8080/livros`;
+    const apiUrl = `http://10.68.77.71:8080/books`;
     fetch(apiUrl, {
       method: "POST",
       headers: {
@@ -78,7 +78,7 @@ class LivroForm extends React.Component {
   }
 
   editar() {
-    const apiUrl = `http://localhost:8080/livros/${this.state.livro.isbn}`;
+    const apiUrl = `http://10.68.77.71:8080/books/${this.state.livro.isbn}`;
     fetch(apiUrl, {
       method: "PUT",
       headers: {
